@@ -1,0 +1,12 @@
+#version 330 core
+out vec4 FragColor;
+in vec4 vertexColor;
+in vec4 uv;
+uniform float warpper;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+void main()
+{
+	//FragColor=texture(texture1,uv.xy);
+	FragColor=(vertexColor*0.5+0.5)*mix(texture(texture1,uv.xy),texture(texture2,uv.xy),sin(warpper)*0.5+0.5);
+}

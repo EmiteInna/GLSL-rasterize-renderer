@@ -1,0 +1,24 @@
+#version 330 core
+out vec4 FragColor;
+
+in vec4 vertexColor;
+in vec4 uv;
+in vec4 normalWS;
+in vec4 tangentWS;
+in vec4 positionWS;
+uniform vec3 LightDirection;
+uniform vec3 LightColor;
+uniform vec3 WorldSpaceCameraPos;
+
+uniform sampler2D baseMap;
+void main()
+{
+	//FragColor=texture(texture1,uv.xy);
+	vec3 halflambert=texture(baseMap,uv.xy).xyz*LightColor*(max(0,dot(LightDirection,normalWS.xyz))*0.5+0.5);
+	vec3 viewDir=normalize(WorldSpaceCameraPos-positionWS.xyz);
+	vec3 halfDir=normalize(viewDir+LightDirection);
+	vec3 spec=LightColor*pow(max(0,dot(normalWS.xyz,halfDir)),15);
+	FragColor=vec4(spec+halflambert,1);
+//FragColor=vec4(normalWS.xyz*0.5+0.5,1);
+//FragColor=vec4(normalWS.xyz,1);
+}
